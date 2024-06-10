@@ -1,0 +1,14 @@
+{% extends 'coinmarketapp/base.html' %}{% load static %}{% block content %}
+<section>
+<link rel="stylesheet" type="text/css" href="{% static 'payment/checkout.css' %}">
+<div style="margin-top: 5%">
+    <h3 class="card-title">Select the Currency you want to buy</h3>
+    <form method="post" class="card-content">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+    <br/>
+</div>
+</section>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends 'coinmarketapp/base.html' %}
+{%  load static %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="login-container">
+        <div class="form-box">
+            <h1 id="title">Sign Up</h1>
+            <form method="post" enctype="multipart/form-data">
+      
+
+{% if form.errors %}
+    <div class="alert alert-danger">
+        <strong>Error:</strong> Please correct the errors below.
+        <ul>
+            {% for error in form.errors.items %}
+                {% comment %} {% for error in err %}
+                    <li>{{ message }}</li>
+                {% endfor %} {% endcomment %}
+                {{error}}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %} 
+
+{% comment %} {% if form.errors  %}
+<div class="alert alert-danger">
+    <strong>Please correct the errors below.</strong>
+    <ul>
+
+        {% for field, errors in form.errors.items  %}
+        {% for error in errors %}
+        <li>{{ error }}</li>
+    {% endfor %}
+        {% endfor %}
+
+    </ul>
+
+</div>
+{% endif %} {% endcomment %}
+
+
+
+
+
+
+
+                {% csrf_token %}
+                <div class="input-group">
+
+                        <div class="input-field" id="namefield">
+
+                            <label for="id_username">Username:</label>
+                            <input type="text" name="username" required id="id_username">
+                        </div>
+
+
+                       
+                        <div class="input-field" id="passwordfield">
+                            <label for="id_password1">Password:</label>
+                            <input type="password" name="password1" required id="id_password1">
+                        </div>
+                        <div class="input-field" id="passwordfield">
+                            <label for="id_password2">Confirm Password:</label>
+                            <input type="password" name="password2" required id="id_password2">
+                        </div>
+
+                         <div class="input-field" id="profile-picture-field">
+                            <label for="id_profile_picture">Profile Picture:</label>
+                            {{ form.profile_picture }}
+                            <input type="file" name="profile_picture" accept="image/png, image/jpeg" >
+                            
+                        </div> 
+
+                        
+                        <div class="btn-field">
+                            <button type="submit">Sign Up</button>
+                        </div>
+            </div>
+
+            <p class="base-line">Already have an account? <a href="{% url 'login' %}">Log In</a></p>
+
+            </form>
+            <br><br>
+        </div>
+    </div>
+</body>
+</html>
+
+{% endblock content %}
+
+

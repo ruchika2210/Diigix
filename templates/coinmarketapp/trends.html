@@ -1,0 +1,43 @@
+{% extends 'coinmarketapp/crypto_list.html' %} {% load static %}
+{% block trending %}
+<section class="section-trending">
+  <div class="trending-box">
+    <div class="trending-header">Trending</div>
+    <div class="frame">
+      {% for crypto in trending_currencies %}
+      <div class="trending-item">
+        <div class="trending-item--logo-container">
+          <img
+            class="trending-item--logo"
+            src="{{ crypto.image }}"
+            alt="{{ crypto.name }} Logo"
+          />
+        </div>
+        <p class="text-wrapper">
+          {{ crypto.rank }} {{ crypto.name }}
+          <span class="u-text-upper">{{ crypto.symbol }}</span>
+          <span
+            class="u-float-right {% if crypto.price_change_percentage_24h < 0 %}text-danger{% else %}text-success{% endif %}"
+            >{{ crypto.price_change_percentage_24h }}%</span
+          >
+        </p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="trending-box">
+    <div class="trending-header">Fear &amp; Greed Index</div>
+    <img
+      class="meter u-center"
+      src="https://c.animaapp.com/tDQH8n4L/img/meter.svg"
+    />
+    <img
+      class="indicator u-center"
+      src="https://c.animaapp.com/tDQH8n4L/img/indicator.svg"
+    />
+    <p class="indicator-text u-center">
+      <span class="indicator-text u-text-size-large">75</span> <br />Greed
+    </p>
+  </div>
+</section>
+{% endblock %}

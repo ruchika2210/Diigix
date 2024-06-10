@@ -1,0 +1,82 @@
+{% extends 'coinmarketapp/base.html' %}
+{% load static %}
+{% block content %}
+
+ <link rel="stylesheet" type="text/css" href="{% static 'coinmarketapp/converter.css' %}">
+    <title>DIGIX - Coin Market Application</title>
+
+
+
+
+<div class="exchange">
+    <div class="wrapper">
+        <h1>Currency Converter</h1>
+        <form>
+            <div class="amount">
+                <label for="amount">Enter Amount</label>
+                <input type="number" id="amount" value="1">
+            </div>
+            <div class="drop-list">
+                <div class="from">
+                    <label>From</label>
+                    <div class="select-box">
+                        <select id="fromCurrency">
+                            {% for crypto in cryptocurrencies %}
+                                <option value="{{ crypto.symbol }}">{{ crypto.name }} ({{ crypto.symbol }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="icon"><i class="fa-duotone fa-square-right fa-beat-fade"></i></div>
+                <div class="to">
+                    <label>To</label>
+                    <div class="select-box">
+                        <select id="toCurrency">
+                            <option value="USD" selected>USD</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exchange-rate" id="exchangeRate">Getting exchange rate...
+            <p id="exchangeRateMessage"></p>
+            </div>
+
+              <button type="button" onclick="getExchangeRate()" id="exchangeRateButton">Get Exchange Rate</button>
+
+        </form>
+    </div>
+
+
+    <!-- Add the JavaScript code at the end of the body -->
+    <script defer>
+    function getExchangeRate() {
+        var amount = document.getElementById('amount').value;
+        var fromCurrency = document.getElementById('fromCurrency').value;
+        var toCurrency = document.getElementById('toCurrency').value;
+
+        // Make an AJAX request to get the exchange rate
+        fetch(`/get_exchange_rate/${fromCurrency}/${toCurrency}/`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                var exchangeRate = parseFloat(data.rate);
+                var result = amount * exchangeRate;
+
+                document.getElementById('exchangeRateMessage').innerHTML = `${amount} ${fromCurrency} = ${result} ${toCurrency}`;
+                document.getElementById('exchangeRateMessage').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error fetching exchange rate:', error);
+                document.getElementById('exchangeRateMessage').innerHTML = `Error fetching exchange rate: ${error.message}`;
+                document.getElementById('exchangeRateMessage').style.display = 'block';
+            });
+    }
+</script>
+ </div>
+
+{% endblock %}

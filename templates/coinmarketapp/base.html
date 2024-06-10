@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'coinmarketapp/styles.css' %}"
+    />
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'coinmarketapp/styleguide.css' %}"
+    />
+    <title>DIGIX - Coin Market Application</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="latest">
+        {% for crypto in trending_currencies %} {% if forloop.counter <= 3 %}
+        <p class="{{ crypto.name }}">
+          <span class="text-wrapper">{{ crypto.name }}: </span>
+          <span
+            class="{% if crypto.price_change_percentage_24h < 0 %}text-danger{% else %}text-success{% endif %}"
+            >{{ crypto.price_change_percentage_24h }}%</span
+          >
+        </p>
+        <!-- Add other information you want to display -->
+        {% endif %} {% endfor %} {% if trending_currencies %}
+        <p>Highest ranked: <strong>{{highest_ranked_crypto}}</strong></p>
+        <p>Lowest ranked: <strong>{{lowest_ranked_crypto}}</strong></p>
+        {% endif %}
+      </div>
+      <div class="navbar">
+        <a href="{% url 'demo' %}">
+          <div class="logo">
+            <img
+              src="{% static 'coinmarketapp/logo.png' %}"
+              alt="CoinMarketApp"
+            />
+          </div>
+        </a>
+
+        <nav>
+          <ul>
+            <li><a href="/home">Home</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'user_profile' %}">My Account</a></li>
+            <li><a href="{% url 'exchange' %}">Exchanges</a></li>
+{#            <li><a href="#">Markets</a></li>#}
+            <a href="{% url 'change_password' %}">Change Password</a>
+
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+
+            <!-- If user is not authenticated, you can show different content or simply not display the links -->
+            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'signup' %}">Sign Up</a></li>
+            {% endif %}
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <div class="content">{% block content %}{% endblock %}</div>
+
+    <footer>
+      <p>&copy; 2023 DIGIX - All Rights Reserved</p>
+    </footer>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
